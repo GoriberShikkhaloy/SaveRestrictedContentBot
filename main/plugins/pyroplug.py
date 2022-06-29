@@ -25,16 +25,16 @@ async def check(userbot, client, link):
             await userbot.get_messages(chat, msg_id)
             return True, None
         except ValueError:
-            return False, "**Invalid Link!**"
+            return False, "**ত্রুটিপূর্ণ লিংক!**"
         except Exception:
-            return False, "Have you joined the channel?"
+            return False, "আপনি এখনো চ্যানেলে জয়েন হন নি।"
     else:
         try:
             chat = str(link.split("/")[-2])
             await client.get_messages(chat, msg_id)
             return True, None
         except Exception:
-            return False, "Maybe bot is banned from the chat, or your link is invalid!"
+            return False, "ত্রুটিপূর্ণ লিংক দিয়েছেন অথবা আপনার অ্যাকাউন্ট টা ওই চ্যানেল বা গ্রুপে ব্লক করা হয়েছে!"
             
 async def get_msg(userbot, client, sender, edit_id, msg_link, i):
     edit = ""
@@ -46,28 +46,28 @@ async def get_msg(userbot, client, sender, edit_id, msg_link, i):
             msg = await userbot.get_messages(chat, msg_id)
             if msg.media:
                 if 'web_page' in msg.media:
-                    edit = await client.edit_message_text(sender, edit_id, "Cloning.")
+                    edit = await client.edit_message_text(sender, edit_id, "কপি করা হচ্ছে...")
                     await client.send_message(sender, msg.text.markdown)
                     await edit.delete()
                     return
             if not msg.media:
                 if msg.text:
-                    edit = await client.edit_message_text(sender, edit_id, "Cloning.")
+                    edit = await client.edit_message_text(sender, edit_id, "কপি করা হচ্ছে...")
                     await client.send_message(sender, msg.text.markdown)
                     await edit.delete()
                     return
-            edit = await client.edit_message_text(sender, edit_id, "Trying to Download.")
+            edit = await client.edit_message_text(sender, edit_id, "ডাউনলোড করার চেষ্টা চলছে...")
             file = await userbot.download_media(
                 msg,
                 progress=progress_for_pyrogram,
                 progress_args=(
                     client,
-                    "**DOWNLOADING:**\n",
+                    "**ডাউনলোড চলমান:**\n",
                     edit,
                     time.time()
                 )
             )
-            await edit.edit('Preparing to Upload!')
+            await edit.edit('আপলোড করার প্রস্তুতি চলছে...')
             caption = str(file)
             if msg.caption is not None:
                 caption = msg.caption
@@ -89,13 +89,13 @@ async def get_msg(userbot, client, sender, edit_id, msg_link, i):
                     progress=progress_for_pyrogram,
                     progress_args=(
                         client,
-                        '**UPLOADING:**\n',
+                        '**আপলোড চলমান:**\n',
                         edit,
                         time.time()
                     )
                 )
             elif str(file).split(".")[-1] in ['jpg', 'jpeg', 'png', 'webp']:
-                await edit.edit("Uploading photo.")
+                await edit.edit("ছবি আপলোড চলছে...")
                 await bot.send_file(sender, file, caption=caption)
             else:
                 thumb_path=thumbnail(sender)
@@ -107,28 +107,28 @@ async def get_msg(userbot, client, sender, edit_id, msg_link, i):
                     progress=progress_for_pyrogram,
                     progress_args=(
                         client,
-                        '**UPLOADING:**\n',
+                        '**আপলোড চলমান:**\n',
                         edit,
                         time.time()
                     )
                 )
             await edit.delete()
         except (ChannelBanned, ChannelInvalid, ChannelPrivate, ChatIdInvalid, ChatInvalid):
-            await client.edit_message_text(sender, edit_id, "Have you joined the channel?")
+            await client.edit_message_text(sender, edit_id, "আপনি কি ওই চ্যানেলে জয়েন হয়েছিলেন?")
             return 
         except Exception as e:
-            await client.edit_message_text(sender, edit_id, f'Failed to save: `{msg_link}`')
+            await client.edit_message_text(sender, edit_id, f'এই লিংকটি থেকে ডাউনলোড ব্যার্থ হয়েছে: `{msg_link}`')
             return 
     else:
-        edit = await client.edit_message_text(sender, edit_id, "Cloning.")
+        edit = await client.edit_message_text(sender, edit_id, "কপি করা হচ্ছে...")
         chat =  msg_link.split("/")[-2]
         try:
             await client.copy_message(int(sender), chat, msg_id)
         except Exception as e:
             print(e)
-            return await client.edit_message_text(sender, edit_id, f'Failed to save: `{msg_link}`')
+            return await client.edit_message_text(sender, edit_id, f'এই লিংকটি থেকে ডাউনলোড ব্যার্থ হয়েছে: `{msg_link}`')
         await edit.delete()
         
 async def get_bulk_msg(userbot, client, sender, msg_link, i):
-    x = await client.send_message(sender, "Processing!")
+    x = await client.send_message(sender, "প্রক্রিয়া চলছে...")
     await get_msg(userbot, client, sender, x.message_id, msg_link, i) 
