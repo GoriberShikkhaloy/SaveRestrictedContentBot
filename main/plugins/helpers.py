@@ -12,16 +12,16 @@ from datetime import datetime as dt
 async def join(client, invite_link):
     try:
         await client.join_chat(invite_link)
-        return "Successfully joined the Channel"
+        return "চ্যানেলটিতে সফলভাবে জয়েন হয়েছেন।"
     except UserAlreadyParticipant:
-        return "User is already a participant."
+        return "চ্যানেলটিতে আপনি ইতিমধ্যেই যুক্ত আছেন।"
     except (InviteHashInvalid, InviteHashExpired):
-        return "Could not join. Maybe your link is expired or Invalid."
+        return "জয়েন হওয়া যায় নি। আপনার দেয়া লিংকটি ভূল অথবা মেয়াদোত্তীর্ণ।"
     except FloodWait:
-        return "Too many requests, try again later."
+        return "অনেকবার চেষ্টা করেছেন। কিছুক্ষণ অপেক্ষা করে এরপর আবার চেষ্টা করুন।"
     except Exception as e:
         print(e)
-        return "Could not join, try joining manually."
+        return "জয়েন হওয়া যায় নি। ম্যানুয়ালি জয়েন হওয়ার চেষ্টা করা হচ্ছে।"
     
 #Regex---------------------------------------------------------------------------------------------------------------
 #to get the url from event
