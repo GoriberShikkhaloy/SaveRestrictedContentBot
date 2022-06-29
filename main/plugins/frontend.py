@@ -12,9 +12,9 @@ from telethon import events
 
 from ethon.telefunc import force_sub
 
-ft = f"To use this bot you've to join @{fs}."
+ft = f"এই বটটি ব্যবহার করার জন্য আপনাকে হুদাই @{fs} এই চ্যানেলে জয়েন হতে হবে।"
 
-message = "Send me the message link you want to start saving from, as a reply to this message."
+message = "আপনি যে লিংক থেকে কোনো ফাইল ডাউনলোড করে নিতে চান সেটির লিংক আমাকে দিন।"
           
 # To-Do:
 # Make these codes shorter and clean
@@ -36,7 +36,7 @@ async def clone(event):
     if s == True:
         await event.reply(r)
         return
-    edit = await event.reply("Processing!")
+    edit = await event.reply("প্রক্রিয়া চলছে...")
     if 't.me/+' in link:
         q = await join(userbot, link)
         await edit.edit(q)
