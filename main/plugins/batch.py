@@ -62,8 +62,8 @@ async def _batch(event):
                 return await conv.send_message("আপনার রেসপন্সের জন্য আর বেশি অপেক্ষা করতে পারছি না!")
             try:
                 value = int(_range.text)
-                if value > 200:
-                    return await conv.send_message("প্রতিবার ব্যাচ ডাউনলোডে আপনি সর্বোচ্চ ২০০ টি ফাইল ডাউনলোড করতে পারবেন।")
+                if value > 100:
+                    return await conv.send_message("প্রতিবার ব্যাচ ডাউনলোডে আপনি সর্বোচ্চ ৮০ টি ফাইল ডাউনলোড করতে পারবেন।")
             except ValueError:
                 return await conv.send_message("রেঞ্জটি অবশ্যই বাস্তব ধনাত্মক সংখ্যা হতে হবে!")
             s, r = await check(userbot, Bot, _link)
@@ -80,11 +80,11 @@ async def run_batch(userbot, client, sender, link, _range):
     for i in range(_range):
         timer = 60
         if i < 25:
-            timer = 8
+            timer = 15
         if i < 50 and i > 25:
-            timer = 20
+            timer = 25
         if i < 200 and i > 50:
-            timer = 35
+            timer = 40
         if not 't.me/c/' in link:
             if i < 25:
                 timer = 2
